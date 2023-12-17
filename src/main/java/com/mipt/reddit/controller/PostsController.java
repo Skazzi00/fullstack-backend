@@ -1,8 +1,7 @@
 package com.mipt.reddit.controller;
 
-import com.mipt.reddit.dtos.PostCreateDto;
+import com.mipt.reddit.dtos.PostCreateOrUpdateDto;
 import com.mipt.reddit.dtos.PostDto;
-import com.mipt.reddit.dtos.PostUpdateDto;
 import com.mipt.reddit.dtos.UserDto;
 import com.mipt.reddit.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +27,20 @@ public class PostsController {
     }
 
     @PostMapping
-    ResponseEntity<Void> addPost(@RequestBody PostCreateDto postCreateDto, UsernamePasswordAuthenticationToken principal) {
+    ResponseEntity<Void> addPost(@RequestBody PostCreateOrUpdateDto postCreateOrUpdateDto, UsernamePasswordAuthenticationToken principal) {
         UserDto user = (UserDto) principal.getPrincipal();
-        postService.createPost(postCreateDto, user.getUsername());
+        postService.createPost(postCreateOrUpdateDto, user.getUsername());
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    ResponseEntity<Void> updatePost(@RequestBody PostUpdateDto postUpdateDto, UsernamePasswordAuthenticationToken principal) {
+    @PutMapping("/{id}")
+    ResponseEntity<Void> updatePost(
+            @PathVariable(name = "id") long id,
+            @RequestBody PostCreateOrUpdateDto postUpdateDto,
+            UsernamePasswordAuthenticationToken principal)
+    {
         UserDto user = (UserDto) principal.getPrincipal();
-        postService.updatePost(postUpdateDto, user.getUsername());
+        postService.updatePost(id, postUpdateDto, user.getUsername());
         return ResponseEntity.noContent().build();
     }
 

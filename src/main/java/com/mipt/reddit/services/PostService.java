@@ -5,11 +5,9 @@ import com.mipt.reddit.mappers.PostMapper;
 import com.mipt.reddit.model.Post;
 import com.mipt.reddit.model.User;
 import com.mipt.reddit.repository.PostRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.mipt.reddit.dtos.PostCreateDto;
-import com.mipt.reddit.dtos.PostUpdateDto;
+import com.mipt.reddit.dtos.PostCreateOrUpdateDto;
 import com.mipt.reddit.repository.UserRepository;
 import org.springframework.security.access.AccessDeniedException;
 
@@ -33,21 +31,21 @@ public class PostService {
         }
     }
 
-    public void createPost(PostCreateDto postCreateDto, String username) {
+    public void createPost(PostCreateOrUpdateDto postCreateOrUpdateDto, String username) {
         var user = userRepository.findByUsername(username).orElseThrow();
         
         Post postEntity = Post.builder()
-                .title(postCreateDto.getTitle())
-                .content(postCreateDto.getContent())
+                .title(postCreateOrUpdateDto.getTitle())
+                .content(postCreateOrUpdateDto.getContent())
                 .owner(user)
                 .build();
 
         postRepository.save(postEntity);
     }
 
-     public void updatePost(PostUpdateDto postUpdateDto, String username) {
+     public void updatePost(long id, PostCreateOrUpdateDto postUpdateDto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow();
-        Post post = postRepository.findById(postUpdateDto.getId()).orElseThrow();
+        Post post = postRepository.findById(id).orElseThrow();
         
         checkPermission(user, post);
 

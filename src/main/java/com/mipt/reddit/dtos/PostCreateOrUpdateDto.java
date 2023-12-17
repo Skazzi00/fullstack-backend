@@ -3,8 +3,7 @@ package com.mipt.reddit.dtos;
 import lombok.Data;
 
 @Data
-public class PostUpdateDto {
-    long id;
+public class PostCreateOrUpdateDto {
     String title;
     String content;
 }
