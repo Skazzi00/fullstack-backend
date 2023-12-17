@@ -21,7 +21,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     public List<PostDto> getAllPosts(String query) {
-        List<Post> allPosts = postRepository.findByTitleContainsIgnoreCase(query);
+        List<Post> allPosts = postRepository.findByTitleContainsIgnoreCaseOrderByIdDesc(query);
         return allPosts.stream().map(postMapper::toPostDto).toList();
     }
 
