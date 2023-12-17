@@ -20,8 +20,8 @@ public class PostService {
     private final PostMapper postMapper;
     private final UserRepository userRepository;
 
-    public List<PostDto> getAllPosts() {
-        List<Post> allPosts = postRepository.findAll();
+    public List<PostDto> getAllPosts(String query) {
+        List<Post> allPosts = postRepository.findByTitleContains(query);
         return allPosts.stream().map(postMapper::toPostDto).toList();
     }
 

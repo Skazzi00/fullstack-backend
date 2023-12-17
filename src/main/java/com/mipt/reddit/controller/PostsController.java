@@ -22,8 +22,8 @@ public class PostsController {
     private final PostService postService;
 
     @GetMapping
-    ResponseEntity<List<PostDto>> getPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    ResponseEntity<List<PostDto>> getPosts(@RequestParam(value = "q", defaultValue = "") String query) {
+        return ResponseEntity.ok(postService.getAllPosts(query));
     }
 
     @PostMapping
