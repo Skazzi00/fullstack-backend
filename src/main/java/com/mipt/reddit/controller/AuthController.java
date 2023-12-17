@@ -35,7 +35,9 @@ public class AuthController {
 
     @GetMapping("/user")
     public ResponseEntity<UserDto> user(UsernamePasswordAuthenticationToken principal) {
-        return ResponseEntity.ok((UserDto) principal.getPrincipal());
+        UserDto user = (UserDto) principal.getPrincipal();
+        UserDto byLogin = userService.findByLogin(user.getUsername());
+        return ResponseEntity.ok(byLogin);
     }
 
 }
