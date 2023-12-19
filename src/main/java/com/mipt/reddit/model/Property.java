@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
+@Table(name = "property")
 public class Property {
     @Id
     String key;
