@@ -19,6 +19,6 @@ public class UserMapper {
     }
 
     public User signUpToUser(SignUpDto signUpDto) {
-        return User.builder().username(signUpDto.getUsername()).build();
+        return User.builder().username(signUpDto.getUsername()).isSuperuser(false).build();
     }
 }

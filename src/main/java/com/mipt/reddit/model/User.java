@@ -19,6 +19,5 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
-    @Builder.Default
-    private boolean isSuperuser = false;
+    private boolean isSuperuser;
 }
