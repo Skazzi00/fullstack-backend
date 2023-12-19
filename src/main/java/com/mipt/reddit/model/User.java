@@ -19,4 +19,5 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
+    private boolean isSuperuser = false;
 }

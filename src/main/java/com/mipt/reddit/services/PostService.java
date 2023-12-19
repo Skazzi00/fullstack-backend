@@ -19,6 +19,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final UserRepository userRepository;
+    private final PropertyService propertyService;
 
     public List<PostDto> getAllPosts(String query) {
         List<Post> allPosts = postRepository.findByTitleContainsIgnoreCaseOrderByIdDesc(query);
@@ -26,6 +27,9 @@ public class PostService {
     }
 
     private void checkPermission(User user, Post post) {
+        if (user.isSuperuser()) {
+            return;
+        }
         if (post.getOwner().getId() != user.getId()) {
             throw new AccessDeniedException("User is not the owner of the post");
         }

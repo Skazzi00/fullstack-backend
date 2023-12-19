@@ -4,9 +4,11 @@ import com.mipt.reddit.dtos.PostCreateOrUpdateDto;
 import com.mipt.reddit.dtos.PostDto;
 import com.mipt.reddit.dtos.UserDto;
 import com.mipt.reddit.services.PostService;
+import com.mipt.reddit.services.PropertyService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ public class PostsController {
     Logger logger = LoggerFactory.getLogger(PostsController.class);
 
     private final PostService postService;
+    private final PropertyService propertyService;
 
     @GetMapping
     ResponseEntity<List<PostDto>> getPosts(@RequestParam(value = "q", defaultValue = "") String query) {
@@ -28,6 +31,9 @@ public class PostsController {
 
     @PostMapping
     ResponseEntity<Void> addPost(@RequestBody PostCreateOrUpdateDto postCreateOrUpdateDto, UsernamePasswordAuthenticationToken principal) {
+        if (!propertyService.getNewPostsAllowed()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         UserDto user = (UserDto) principal.getPrincipal();
         postService.createPost(postCreateOrUpdateDto, user.getUsername());
         return ResponseEntity.noContent().build();
@@ -39,6 +45,9 @@ public class PostsController {
             @RequestBody PostCreateOrUpdateDto postUpdateDto,
             UsernamePasswordAuthenticationToken principal)
     {
+        if (!propertyService.getNewPostsAllowed()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         UserDto user = (UserDto) principal.getPrincipal();
         postService.updatePost(id, postUpdateDto, user.getUsername());
         return ResponseEntity.noContent().build();
