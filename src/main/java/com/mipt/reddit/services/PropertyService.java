@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PropertyService {
-    PropertyRepository propertyRepository;
+    private final PropertyRepository propertyRepository;
 
     public boolean getNewPostsAllowed() {
         return propertyRepository
